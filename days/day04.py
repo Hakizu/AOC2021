@@ -83,3 +83,45 @@ def finalScore(winNo, board):
 winNo, winBoard = runBingo(boards)
 finalScore(winNo, winBoard)
 
+#Part 2
+# unique entries
+finishedBoards = set()
+
+def checkRowLast(board):
+  for line in board:
+    for i, nr in enumerate(line):
+      if nr[1] == False:
+        break
+      if i == 4:
+        return True
+
+def checkColumnLast(board):
+  for col in range(len(board)):
+    for i, line in enumerate(board):
+      if line[col][1] == False:
+        break
+      elif i == 4:
+        return True
+  return False
+
+def runLast(boards):
+  for nr in numbers:
+    markField(nr)
+    for i, board in enumerate(boards):
+      #if iteration of board alreyady saved, skip
+      if i in finishedBoards:
+        continue
+
+      if checkRowLast(board):
+        # check if it's the last board
+        if len(finishedBoards) == len(boards) -1:
+          return nr, board
+        finishedBoards.add(i)
+      
+      if checkColumnLast(board):
+        if len(finishedBoards) == len(boards) -1:
+          return nr, board
+        finishedBoards.add(i)
+
+lastNr, lastBoard = runLast(boards)
+finalScore(lastNr, lastBoard)
